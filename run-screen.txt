@@ -10,3 +10,6 @@ screen -r               //to return to the process in background
 git config -e
 
 rm -rf <directory>
+
+push by token
+settings/dev options/crete new token
