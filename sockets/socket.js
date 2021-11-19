@@ -1,9 +1,10 @@
 const { io } = require('../index.js');
 
-var contador = 0;
+//var contador = 0;
 var socketx = {};
 // Mensajes de Sockets
 io.on('connection', socket => {
+    var contador = 0;
     console.log('Nuevo socket conectado');
     exports.socketx = socket;
 
