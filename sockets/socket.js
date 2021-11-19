@@ -1,10 +1,11 @@
-const { io } = require('../index');
+const { io } = require('../index.js');
 
 var contador = 0;
+var socketx = {};
 // Mensajes de Sockets
 io.on('connection', socket => {
     console.log('Nuevo socket conectado');
-
+    exports.socketx = socket;
 
     socket.on('login', (payload) => {
         //1 publish into backend topics aka kaftka or rabbitmq
