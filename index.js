@@ -21,7 +21,7 @@ const { name = 'default', port = process.env.PORT } = args;
 //app.use( express.static( publicPath ) );
 
 app.get('/', (req, resp) => {
-    socketx.socketx.emit('ONINCREMENTAR', { contador: 100 });
+    //socketx.socketx.emit('ONINCREMENTAR', { contador: 100 });
     console.log("xxx");
 
     //resp.send(`socket.io...on ...: ${port}----${JSON.stringify(socketx, null, 2)}`);
