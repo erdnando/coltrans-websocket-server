@@ -41,16 +41,15 @@ io.on('connection', socket => {
         contador++;
         //1 publish into backend topics aka kaftka or rabbitmq
         //amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
-
         amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
             if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
 
-                var queue = 'queue_contador'; // + connid;
+                var queue = 'queue_contador' + connid;
                 //var msg = contador.toString();
-                channel.assertQueue(queue, { durable: false });
+                channel.assertQueue(queue, { durable: false, autoDelete: true });
 
                 var payload = {
                     contador: contador.toString(),
