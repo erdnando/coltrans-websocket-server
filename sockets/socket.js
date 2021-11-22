@@ -46,9 +46,10 @@ io.on('connection', socket => {
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
 
-                var queue = 'queue_contador' + connid;
-                var msg = contador.toString();
+                var queue = 'queue_contador'; // + connid;
+                //var msg = contador.toString();
                 channel.assertQueue(queue, { durable: false });
+
                 var payload = {
                     contador: contador.toString(),
                     queue: queue
@@ -60,7 +61,6 @@ io.on('connection', socket => {
 
 
                 channel.consume(queue, function(msg) {
-                    console.log(" [x] Received %s", JSON.parse(msg.content.toString()).contador);
                     socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).contador.toString() });
                     console.log(" [x] Received %s", JSON.parse(msg.content).contador.toString());
                 }, {
