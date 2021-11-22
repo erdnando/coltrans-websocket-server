@@ -49,20 +49,20 @@ io.on('connection', socket => {
                 var queue = 'queue_contador' + connid;
                 var msg = contador.toString();
                 channel.assertQueue(queue, { durable: false });
-
-                //channel.sendToQueue(queue, Buffer.from(msg));
-                channel.sendToQueue(queue, Buffer.from({
+                var payload = {
                     contador: contador.toString(),
                     queue: queue
-                }));
+                };
+                //channel.sendToQueue(queue, Buffer.from(msg));
+                channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)));
                 console.log(" [x] Sent %s", msg);
 
 
 
                 channel.consume(queue, function(msg) {
-                    console.log(" [x] Received %s", msg.content.toString());
-                    socket.emit('ONINCREMENTAR', { contador: msg.content.contador.toString() });
-                    console.log(" [x] Received %s", msg.content.toString());
+                    console.log(" [x] Received %s", JSON.parse(msg.content.toString()).contador);
+                    socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).contador.toString() });
+                    console.log(" [x] Received %s", JSON.parse(msg.content).contador.toString());
                 }, {
                     noAck: true
                 });
