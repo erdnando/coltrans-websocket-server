@@ -47,23 +47,25 @@ io.on('connection', socket => {
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
 
-                var queue = 'queue_contador' + connid;
-                //var msg = contador.toString();
-                channel.assertQueue(queue, { durable: false, autoDelete: true });
+                var q_target = 'q_ms_incrementa'; //ms q incrementa en 1 el valor recibido
+                var q_origin = 'q_origin' + connid;
+
+                channel.assertQueue(q_target, { durable: false, autoDelete: true });
+                channel.assertQueue(q_origin, { durable: false, autoDelete: true });
 
                 var payload = {
-                    contador: contador.toString(),
-                    queue: queue
+                    valor: contador.toString(),
+                    q_origin: q_origin
                 };
-                //channel.sendToQueue(queue, Buffer.from(msg));
-                channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)));
-                console.log(" [x] Sent %s", payload.contador);
+
+                //---------------------EMIT REQUEST----------------------------------------------------------------------
+                channel.sendToQueue(q_target, Buffer.from(JSON.stringify(payload)));
 
 
-
-                channel.consume(queue, function(msg) {
-                    socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).contador.toString() });
-                    console.log(" [x] Received %s", JSON.parse(msg.content).contador.toString());
+                //---------------------CONSUME RESPONSE------------------------------------------------------------------
+                channel.consume(q_origin, function(msg) {
+                    socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
+                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
                 }, {
                     noAck: true
                 });
