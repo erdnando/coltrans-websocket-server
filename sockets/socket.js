@@ -40,7 +40,8 @@ io.on('connection', socket => {
 
         contador++;
         //1 publish into backend topics aka kaftka or rabbitmq
-        amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
+        //amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
+        amqp.connect('amqp://192.168.0.4:5672', function(error0, connection) {
             if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
