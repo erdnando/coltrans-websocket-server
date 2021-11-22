@@ -56,7 +56,7 @@ io.on('connection', socket => {
                 };
                 //channel.sendToQueue(queue, Buffer.from(msg));
                 channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)));
-                console.log(" [x] Sent %s", msg);
+                console.log(" [x] Sent %s", payload.contador);
 
 
 
