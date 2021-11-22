@@ -60,6 +60,7 @@ io.on('connection', socket => {
 
 
                 channel.consume(queue, function(msg) {
+                    console.log(" [x] Received %s", msg.content.toString());
                     socket.emit('ONINCREMENTAR', { contador: msg.content.contador.toString() });
                     console.log(" [x] Received %s", msg.content.toString());
                 }, {
