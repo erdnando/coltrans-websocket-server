@@ -1,13 +1,14 @@
 const { io } = require('../index.js');
 // Access the callback-based API  
 var amqp = require('amqplib/callback_api');
+const { v4: uuidv4 } = require('uuid');
 
 //var contador = 0;
 //var socketx = {};
 // Mensajes de Sockets
 io.on('connection', socket => {
     var contador = 0;
-    var connid = utils.random_string(8);
+    var connid = uuidv4();
     console.log('Nuevo socket conectado');
     // exports.socketx = socket;
 

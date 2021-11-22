@@ -17,6 +17,7 @@
         "express": "^4.17.1",
         "minimist": "^1.2.5",
         "socket.io": "^2.3.0",
-        "utils.random": "^1.0.1"
+        "utils.random": "^1.0.1",
+        "uuid": "^8.3.2"
     }
 }
