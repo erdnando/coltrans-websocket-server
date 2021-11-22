@@ -7,6 +7,7 @@ var amqp = require('amqplib/callback_api');
 // Mensajes de Sockets
 io.on('connection', socket => {
     var contador = 0;
+    var connid = utils.random_string(8);
     console.log('Nuevo socket conectado');
     // exports.socketx = socket;
 
@@ -44,7 +45,7 @@ io.on('connection', socket => {
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
 
-                var queue = 'queue_contador';
+                var queue = 'queue_contador' + connid;
                 var msg = contador.toString();
                 channel.assertQueue(queue, { durable: false });
 
