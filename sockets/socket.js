@@ -1,4 +1,6 @@
 const { io } = require('../index.js');
+// Access the callback-based API  
+var amqp = require('amqplib/callback_api');
 
 //var contador = 0;
 //var socketx = {};
@@ -33,18 +35,54 @@ io.on('connection', socket => {
     });
 
     socket.on('incrementar', (payload) => {
+
+        contador++;
         //1 publish into backend topics aka kaftka or rabbitmq
+        amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
+            if (error0) { throw error0; }
+
+            connection.createChannel(function(error1, channel) {
+                if (error1) { throw error1; }
+
+                var queue = 'queue_contador';
+                var msg = contador.toString();
+                channel.assertQueue(queue, { durable: false });
+
+                channel.sendToQueue(queue, Buffer.from(msg));
+                console.log(" [x] Sent %s", msg);
+
+
+
+                channel.consume(queue, function(msg) {
+                    socket.emit('ONINCREMENTAR', { contador: msg.content.toString() });
+                    console.log(" [x] Received %s", msg.content.toString());
+                }, {
+                    noAck: true
+                });
+
+
+
+            });
+
+            setTimeout(function() {
+                console.log('release connections...');
+                connection.close();
+                //process.exit(0)
+            }, 2500);
+        });
+
+
 
         //2 subscribe for backend topic response
 
         //3 on response emit event to frontend
 
-        contador++;
-        console.log('incrementar', contador);
+        //contador++;
+        //console.log('incrementar', contador);
         //3.1.1 envia a todos
         //io.emit('ONINCREMENTAR', { contador: contador });
         //3.1.2 o envia solo al cte conectado
-        socket.emit('ONINCREMENTAR', { contador: contador });
+        //socket.emit('ONINCREMENTAR', { contador: contador });
 
     });
 
@@ -98,5 +136,39 @@ io.on('connection', socket => {
                 socket.broadcast.to(room).emit("image", msg);
             });
         })*/
+
+    //Subscribe to queues - receive
+    /* amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
+         if (error0) { throw error0; }
+         connection.createChannel(function(error1, channel) {
+             if (error1) { throw error1; }
+
+             var queue = 'queue_contador';
+
+             channel.assertQueue(queue, { durable: false });
+
+             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+
+             channel.consume(queue, function(msg) {
+                 socket.emit('ONINCREMENTAR', { contador: msg.content.toString() });
+                 console.log(" [x] Received %s", msg.content.toString());
+
+
+             }, {
+                 noAck: true
+             });
+         });
+
+     });*/
+
+
+
+
+
+
+
+
+
+
 
 });
