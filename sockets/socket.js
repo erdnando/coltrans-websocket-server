@@ -50,13 +50,17 @@ io.on('connection', socket => {
                 var msg = contador.toString();
                 channel.assertQueue(queue, { durable: false });
 
-                channel.sendToQueue(queue, Buffer.from(msg));
+                //channel.sendToQueue(queue, Buffer.from(msg));
+                channel.sendToQueue(queue, Buffer.from({
+                    contador: contador.toString(),
+                    queue: queue
+                }));
                 console.log(" [x] Sent %s", msg);
 
 
 
                 channel.consume(queue, function(msg) {
-                    socket.emit('ONINCREMENTAR', { contador: msg.content.toString() });
+                    socket.emit('ONINCREMENTAR', { contador: msg.content.contador.toString() });
                     console.log(" [x] Received %s", msg.content.toString());
                 }, {
                     noAck: true
