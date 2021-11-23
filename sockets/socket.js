@@ -50,7 +50,7 @@ io.on('connection', socket => {
                 var q_target = 'q_ms_incrementa'; //ms q incrementa en 1 el valor recibido
                 var q_origin = 'q_origin' + connid;
 
-                channel.assertQueue(q_target, { durable: false, autoDelete: true });
+                channel.assertQueue(q_target, { durable: false, autoDelete: false });
                 channel.assertQueue(q_origin, { durable: false, autoDelete: true });
 
                 var payload = {
