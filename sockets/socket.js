@@ -74,7 +74,7 @@ io.on('connection', socket => {
 
 
                 //---------------------CONSUME RESPONSE------------------------------------------------------------------
-                channel.consume(q_origin, function(msg) {
+                channel.consume(q_origin + "xxx", function(msg) {
                     socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
                     console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
                 }, {
