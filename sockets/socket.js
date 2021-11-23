@@ -38,7 +38,7 @@ io.on('connection', socket => {
 
     socket.on('incrementar', (payload) => {
 
-        contador++;
+        // contador++;
         //1 publish into backend topics aka kaftka or rabbitmq
         //amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
         amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
