@@ -75,8 +75,10 @@ io.on('connection', socket => {
 
                 //---------------------CONSUME RESPONSE------------------------------------------------------------------
                 channel.consume(q_origin, function(msg) {
-                    socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
-                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
+                    socket.emit('ONINCREMENTAR', { contador: "2345" });
+                    console.log(" [x] Received %s", "2345");
+                    /*socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
+                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());*/
                 }, {
                     noAck: true
                 });
