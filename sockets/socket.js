@@ -21,7 +21,7 @@ io.on('connection', socket => {
         var autenticado = false;
         var mensaje = "";
 
-        if (payload.email == "xxx") {
+        if (payload.email == "erdnando@gmail.com" || payload.email == "hernan660@hotmail") {
             autenticado = true;
             mensaje = "Usuario valido";
         } else {
@@ -48,7 +48,7 @@ io.on('connection', socket => {
                 if (error1) { throw error1; }
 
                 var q_target = 'q_ms_contador';
-                var q_origin = 'q_origin' + connid;
+                var q_origin = 'q_origin' + payload.uuid; // connid; 
 
                 channel.assertQueue(q_target, { durable: false, exclusive: false, autoDelete: false });
                 channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
@@ -108,7 +108,7 @@ io.on('connection', socket => {
                 if (error1) { throw error1; }
 
                 var q_target = 'q_ms_contador';
-                var q_origin = 'q_origin' + connid;
+                var q_origin = 'q_origin' + payload.uuid; // connid; 
 
                 channel.assertQueue(q_target, { durable: false, exclusive: false, autoDelete: false });
                 channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
