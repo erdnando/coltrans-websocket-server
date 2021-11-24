@@ -135,6 +135,7 @@ io.on('connection', socket => {
                     socket.emit('ONDECREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
                     console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
                     connection.close();
+
                 }, {
                     noAck: true
                 });
