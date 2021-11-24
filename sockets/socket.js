@@ -39,23 +39,23 @@ io.on('connection', socket => {
     socket.on('incrementar', (payload) => {
 
         console.log('on click incrementa');
-        // contador++;
+
         //1 publish into backend topics aka kaftka or rabbitmq
-        //amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
         amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
             if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
 
-                var q_target = 'q_ms_incrementa'; //ms q incrementa en 1 el valor recibido
+                var q_target = 'q_ms_contador';
                 var q_origin = 'q_origin' + connid;
 
                 channel.assertQueue(q_target, { durable: false, exclusive: false, autoDelete: false });
                 channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
 
                 var payloadMsg = {
-                    valor: payload.counter, //  contador.toString(),
+                    valor: payload.counter,
+                    operacion: "add",
                     q_origin: q_origin
                 };
 
@@ -65,15 +65,15 @@ io.on('connection', socket => {
                 channel.sendToQueue(q_target, Buffer.from(JSON.stringify(payloadMsg)));
 
 
+                //2 subscribe for backend topic response
                 //---------------------CONSUME RESPONSE------------------------------------------------------------------
                 channel.consume(q_origin, function(msg) {
                     console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
-                    // socket.emit('ONINCREMENTAR', { contador: "2345" });
+
+                    //3 on response emit event to session frontend
+                    //(optional) if you want send to all sessions use io.emit('ONINCREMENTAR', { contador: contador });
                     socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
-                    //console.log(" [x] Received %s", "2345");
                     console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
-                    /*socket.emit('ONINCREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
-                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());*/
                     connection.close();
                 }, {
                     noAck: true
@@ -81,25 +81,7 @@ io.on('connection', socket => {
 
             });
 
-            /*setTimeout(function() {
-                console.log('release connections...');
-                //connection.close();
-                //process.exit(0)
-            }, 2500);*/
         });
-
-
-
-        //2 subscribe for backend topic response
-
-        //3 on response emit event to frontend
-
-        //contador++;
-        //console.log('incrementar', contador);
-        //3.1.1 envia a todos
-        //io.emit('ONINCREMENTAR', { contador: contador });
-        //3.1.2 o envia solo al cte conectado
-        //socket.emit('ONINCREMENTAR', { contador: contador });
 
     });
 
@@ -110,12 +92,61 @@ io.on('connection', socket => {
 
         //3 on response emit event to frontend
 
-        contador--;
+        /*contador--;
         console.log('decrementar', contador);
         //3.1.1 envia a todos
         //io.emit('ONDECREMENTAR', { contador: contador });
         //3.1.2 o envia solo al cte conectado
-        socket.emit('ONDECREMENTAR', { contador: contador });
+        socket.emit('ONDECREMENTAR', { contador: contador });*/
+        console.log('on click decrementa');
+
+        //1 publish into backend topics aka kaftka or rabbitmq
+        amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
+            if (error0) { throw error0; }
+
+            connection.createChannel(function(error1, channel) {
+                if (error1) { throw error1; }
+
+                var q_target = 'q_ms_contador';
+                var q_origin = 'q_origin' + connid;
+
+                channel.assertQueue(q_target, { durable: false, exclusive: false, autoDelete: false });
+                channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
+
+                var payloadMsg = {
+                    valor: payload.counter,
+                    operacion: "subs",
+                    q_origin: q_origin
+                };
+
+                console.log('payloadMsg:');
+                console.log(JSON.stringify(payloadMsg));
+                //---------------------EMIT REQUEST----------------------------------------------------------------------
+                channel.sendToQueue(q_target, Buffer.from(JSON.stringify(payloadMsg)));
+
+
+                //2 subscribe for backend topic response
+                //---------------------CONSUME RESPONSE------------------------------------------------------------------
+                channel.consume(q_origin, function(msg) {
+                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
+
+                    //3 on response emit event to session frontend
+                    //(optional) if you want send to all sessions use io.emit('ONINCREMENTAR', { contador: contador });
+                    socket.emit('ONDECREMENTAR', { contador: JSON.parse(msg.content).valor.toString() });
+                    console.log(" [x] Received %s", JSON.parse(msg.content).valor.toString());
+                    connection.close();
+                }, {
+                    noAck: true
+                });
+
+            });
+
+        });
+
+
+
+
+
 
     });
 
