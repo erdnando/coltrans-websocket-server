@@ -54,15 +54,15 @@ io.on('connection', socket => {
                 channel.assertQueue(q_target, { durable: false, exclusive: false, autoDelete: false });
                 channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
 
-                var payload = {
-                    valor: payload.counter.toString(), //  contador.toString(),
+                var payloadMsg = {
+                    valor: payload.counter, //  contador.toString(),
                     q_origin: q_origin
                 };
 
-                console.log('payload:');
-                console.log(JSON.stringify(payload));
+                console.log('payloadMsg:');
+                console.log(JSON.stringify(payloadMsg));
                 //---------------------EMIT REQUEST----------------------------------------------------------------------
-                channel.sendToQueue(q_target, Buffer.from(JSON.stringify(payload)));
+                channel.sendToQueue(q_target, Buffer.from(JSON.stringify(payloadMsg)));
 
 
                 //---------------------CONSUME RESPONSE------------------------------------------------------------------
