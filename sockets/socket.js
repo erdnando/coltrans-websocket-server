@@ -43,18 +43,10 @@ io.on('connection', socket => {
         //1 publish into backend topics aka kaftka or rabbitmq
         //amqp.connect('amqps://uqxskusb:dsHbnkqnQjuIHAp_O9dlmwK_CI5jXybM@woodpecker.rmq.cloudamqp.com/uqxskusb', function(error0, connection) {
         amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
-            if (error0) {
-                console.log('trono 0');
-                console.log(error0);
-                throw error0;
-            }
+            if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
-                if (error1) {
-                    console.log('trono 1');
-                    console.log(error1);
-                    throw error1;
-                }
+                if (error1) { throw error1; }
 
                 var q_target = 'q_ms_incrementa'; //ms q incrementa en 1 el valor recibido
                 var q_origin = 'q_origin' + connid;
@@ -63,7 +55,7 @@ io.on('connection', socket => {
                 channel.assertQueue(q_origin, { durable: false, exclusive: false, autoDelete: true });
 
                 var payload = {
-                    valor: contador.toString(),
+                    valor: payload.counter.toString(), //  contador.toString(),
                     q_origin: q_origin
                 };
 
