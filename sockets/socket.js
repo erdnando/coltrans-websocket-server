@@ -55,7 +55,7 @@ io.on('connection', socket => {
 
                 var payloadMsg = {
                     valor: payload.counter,
-                    operacion: "add",
+                    accion: "add",
                     q_origin: q_origin
                 };
 
@@ -115,7 +115,7 @@ io.on('connection', socket => {
 
                 var payloadMsg = {
                     valor: payload.counter,
-                    operacion: "subs",
+                    accion: "subs",
                     q_origin: q_origin
                 };
 
