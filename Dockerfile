@@ -27,6 +27,6 @@ RUN npm install
 EXPOSE 8080
 
 #CMD [ "node", "index.js" ]
-CMD [ "node","--nouse-idle-notification --expose-gc","index.js" ]
+CMD [ "node","index.js","--nouse-idle-notification ","--expose-gc" ]
 #npm run serve -- --port=9002
 #node --nouse-idle-notification--expose-gc --max-new-space-size=2048 --max-old-space-size=8192 ./server/websocketserver.js
