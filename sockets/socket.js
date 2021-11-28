@@ -171,6 +171,17 @@ io.on('connection', socket => {
         console.log('Cliente desconectado');
     });
 
+
+    setTimeout(function() {
+        try {
+            if (global.gc) { global.gc(); }
+        } catch (e) {
+            console.log("`node --expose-gc index.js`");
+            //process.exit();
+        }
+
+    }, 5000);
+
     /*
     Then, after a client requests to join a room, 
     the WebSocket will capture and broadcast events from one client to all other clients in the same room.
