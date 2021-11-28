@@ -27,6 +27,7 @@ RUN npm install
 EXPOSE 8080
 
 #CMD [ "node", "index.js" ]
+#https://blog.jayway.com/2015/04/13/600k-concurrent-websocket-connections-on-aws-using-node-js/
 CMD [ "node","index.js","--nouse-idle-notification ","--expose-gc","--max-new-space-size=2048","--max-old-space-size=8192" ]
 #npm run serve -- --port=9002
 #node --nouse-idle-notification --expose-gc --max-new-space-size=2048 --max-old-space-size=8192 ./server/websocketserver.js
