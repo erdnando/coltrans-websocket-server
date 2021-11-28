@@ -180,7 +180,7 @@ io.on('connection', socket => {
             //process.exit();
         }
 
-    }, 5000);
+    }, 30000);
 
     /*
     Then, after a client requests to join a room, 
