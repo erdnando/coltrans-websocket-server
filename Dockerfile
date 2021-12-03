@@ -6,15 +6,6 @@ RUN git clone https://github.com/erdnando/coltrans-websocket-server.git /usr/src
 WORKDIR /usr/src/app
 RUN npm install
 
-#RUN npm ci --only=production
-# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-#FROM nginx:1.17.6
-
-#Copy ci-dashboard-dist
-#COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/coltrans-vuejs-websocket/
-
-
-
 #docker rmi image erdnando/coltrans-websocket-server
 #build
 #docker build -t erdnando/coltrans-websocket-server:1.0 .
@@ -29,5 +20,3 @@ EXPOSE 8080
 #CMD [ "node", "index.js" ]
 #https://blog.jayway.com/2015/04/13/600k-concurrent-websocket-connections-on-aws-using-node-js/
 CMD [ "node","index.js","--nouse-idle-notification ","--expose-gc","--max-new-space-size=2048","--max-old-space-size=8192" ]
-#npm run serve -- --port=9002
-#node --nouse-idle-notification --expose-gc --max-new-space-size=2048 --max-old-space-size=8192 ./server/websocketserver.js
