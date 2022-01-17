@@ -39,10 +39,13 @@ io.on('connection', socket => {
     socket.on('incrementar', (payload) => {
 
         console.log('on click incrementa');
+        console.log('ip updated.......... a 192.168.0.6');
 
         //1 publish into backend topics aka kaftka or rabbitmq
         amqp.connect('amqp://rabbit:password@192.168.0.6:5672/', function(error0, connection) {
-            if (error0) { throw error0; }
+            if (error0) {
+                throw error0;
+            }
 
             connection.createChannel(function(error1, channel) {
                 if (error1) { throw error1; }
