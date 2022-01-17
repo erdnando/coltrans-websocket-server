@@ -41,7 +41,7 @@ io.on('connection', socket => {
         console.log('on click incrementa');
 
         //1 publish into backend topics aka kaftka or rabbitmq
-        amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
+        amqp.connect('amqp://rabbit:password@192.168.0.6:5672/', function(error0, connection) {
             if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
@@ -101,7 +101,7 @@ io.on('connection', socket => {
         console.log('on click decrementa');
 
         //1 publish into backend topics aka kaftka or rabbitmq
-        amqp.connect('amqp://rabbit:password@192.168.0.4:5672/', function(error0, connection) {
+        amqp.connect('amqp://rabbit:password@192.168.0.6:5672/', function(error0, connection) {
             if (error0) { throw error0; }
 
             connection.createChannel(function(error1, channel) {
